@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Stable Interactive AR Model (No Flicker)</title>
+    <title>Interactive AR Model (Custom Marker, Half Size, Stable)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
@@ -18,14 +18,13 @@
         color: white;
         padding: 10px;
         font-family: Arial, sans-serif;
-        z-index: 5;
       }
     </style>
   </head>
   <body>
     <div id="instructions">
-      <strong>Stable Interactive AR Model</strong><br>
-      Allow camera access → aim at your printed marker → rotate or zoom with your finger or mouse.
+      <strong>Interactive AR Model</strong><br>
+      Allow camera access, point at your printed marker, and use your finger or mouse to rotate the model.
     </div>
 
     <a-scene
@@ -41,10 +40,10 @@
             smoothTolerance: 0.01;
             smoothThreshold: 5;">
       
-      <!-- Custom marker -->
+      <!-- Custom marker pattern -->
       <a-marker type="pattern" url="https://raw.githubusercontent.com/rmeylani-byte/AR/main/pattern-marker1.patt">
-
-        <!-- 3D Model -->
+        
+        <!-- 3D Model Entity (Half Size) -->
         <a-entity
           id="model"
           gltf-model="https://raw.githubusercontent.com/rmeylani-byte/AR/main/model.glb"
@@ -55,8 +54,8 @@
         </a-entity>
 
         <!-- Lighting -->
-        <a-entity light="type: ambient; intensity: 1.2"></a-entity>
-        <a-entity light="type: directional; intensity: 0.8" position="1 2 2"></a-entity>
+        <a-entity light="type: ambient; intensity: 1.1"></a-entity>
+        <a-entity light="type: directional; intensity: 0.8" position="1 1 0"></a-entity>
       </a-marker>
 
       <a-entity camera></a-entity>
@@ -79,23 +78,22 @@
           canvas.addEventListener('mousemove', this.handleRotate);
         },
         handleRotate: function (event) {
-          const el = this.el;
           if (event.touches && event.touches.length === 1) {
             const touch = event.touches[0];
             if (this.previousState) {
               const deltaX = touch.pageX - this.previousState.pageX;
               const deltaY = touch.pageY - this.previousState.pageY;
-              const rotation = el.getAttribute('rotation');
+              const rotation = this.el.getAttribute('rotation');
               rotation.y += deltaX * this.data.rotationFactor * 0.1;
               rotation.x += deltaY * this.data.rotationFactor * 0.1;
-              el.setAttribute('rotation', rotation);
+              this.el.setAttribute('rotation', rotation);
             }
             this.previousState = {pageX: touch.pageX, pageY: touch.pageY};
           } else if (event.movementX || event.movementY) {
-            const rotation = el.getAttribute('rotation');
+            const rotation = this.el.getAttribute('rotation');
             rotation.y += event.movementX * 0.5;
             rotation.x += event.movementY * 0.5;
-            el.setAttribute('rotation', rotation);
+            this.el.setAttribute('rotation', rotation);
           }
         },
         handleScale: function (event) {
