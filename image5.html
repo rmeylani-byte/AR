@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Stable Interactive AR Model (Custom Marker)</title>
+    <title>Stable Interactive AR Model (No Flicker)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
@@ -107,23 +107,6 @@
             z: scale.z * delta
           });
         }
-      });
-
-      // --- Reduce flicker by keeping model visible during brief marker losses ---
-      window.addEventListener('DOMContentLoaded', () => {
-        const marker = document.querySelector('a-marker');
-        const model = document.querySelector('#model');
-        let hideTimeout;
-        marker.addEventListener('markerFound', () => {
-          clearTimeout(hideTimeout);
-          model.setAttribute('visible', true);
-        });
-        marker.addEventListener('markerLost', () => {
-          // Wait before hiding in case the marker reappears quickly
-          hideTimeout = setTimeout(() => {
-            model.setAttribute('visible', false);
-          }, 800); // delay in milliseconds
-        });
       });
     </script>
   </body>
