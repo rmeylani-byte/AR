@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>QR Marker AR Viewer</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      #instructions {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="instructions">
+      <strong>AR QR Marker</strong><br>
+      Point your camera at the QR marker to view the 3D model.<br>
+      <a href="https://rmeylani-byte.github.io/AR/marker.html" target="_blank" style="color:#4FC3F7;">Open AR page directly</a>
+    </div>
+
+    <a-scene
+      embedded
+      vr-mode-ui="enabled: false"
+      renderer="logarithmicDepthBuffer: true; colorManagement: true; physicallyCorrectLights: true"
+      arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+      <!-- Use your custom QR marker pattern -->
+      <a-marker type="pattern" url="https://raw.githubusercontent.com/rmeylani-byte/AR/main/pattern-marker.patt">
+        <!-- 3D Model -->
+        <a-entity
+          gltf-model="https://raw.githubusercontent.com/rmeylani-byte/AR/main/model.glb"
+          position="0 0 0"
+          rotation="-90 0 0"
+          scale="0.05 0.05 0.05">
+        </a-entity>
+
+        <!-- Lighting -->
+        <a-entity light="type: ambient; intensity: 1"></a-entity>
+        <a-entity light="type: directional; intensity: 0.8" position="1 1 0"></a-entity>
+      </a-marker>
+
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+      // Optional: tapping the AR view opens your site
+      document.body.addEventListener('click', () => {
+        window.open('https://rmeylani-byte.github.io/AR/marker1.html', '_blank');
+      });
+    </script>
+  </body>
+</html>
